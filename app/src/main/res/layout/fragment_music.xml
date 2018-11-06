@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_background"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.MusicFragment">
+
+    <TextView
+        android:id="@+id/song_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="163dp"
+        android:text="Classical Music"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <com.romancha.playpause.PlayPauseView
+        android:id="@+id/play_pause_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:clickable="true"
+        app:fill_color="#e1e1e1"
+        app:pause_bg="#00a2ed"
+        app:play_bg="#001eff"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:elevation="8dp"/>
+
+    <LinearLayout
+        android:backgroundTint="@android:color/black"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="200dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/shadedLL"
+        android:alpha="0.8"
+        android:background="#000000"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+            <ImageButton
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="#000000"
+            android:clickable="true"
+            android:id="@+id/list_ib"
+            android:src="@drawable/ic_playlist_play_black_36dp"/>
+
+            <ImageButton
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#000000"
+                android:id="@+id/adjust_ib"
+                android:src="@drawable/ic_volume_up_black_36dp"
+                />
+
+            <ImageButton
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:id="@+id/timer_ib"
+                android:background="#000000"
+                android:src="@drawable/ic_timer_black_36dp"
+                />
+        </LinearLayout>
+
+</RelativeLayout>
