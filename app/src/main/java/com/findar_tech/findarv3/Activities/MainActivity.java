@@ -24,6 +24,7 @@ import com.findar_tech.findarv3.Fragments.HelpFragment;
 import com.findar_tech.findarv3.Fragments.LearnFragment;
 import com.findar_tech.findarv3.Fragments.MusicFragment;
 import com.findar_tech.findarv3.R;
+import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
 
 public class MainActivity extends AppCompatActivity implements
         HelpFragment.OnHelpFragmentInteractionListener,
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements
             dialogBuilder.setMessage("Are you sure you want to quit?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    stopService(new Intent(getApplicationContext(), NewBackgroundMusicService.class));
                     finishAffinity();
                 }
             }).setNegativeButton("No", new DialogInterface.OnClickListener() {
