@@ -5,28 +5,38 @@
     <uses-permission
         android:name="android.permission.FOREGROUND_SERVICE"/>
 
+
+
     <application
         android:name=".Services.NotificationChannels"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/findar"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/findar"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity"
-            android:launchMode="singleTop">
+        <activity
+            android:name=".Activities.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.MainActivity"
+            android:launchMode="singleTop">
+        </activity>
         <activity
             android:name=".Activities.SelectMusicActivity"
             android:label="@string/title_activity_select_music"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Activities.VolumeActivity" />
-        <activity android:name=".Activities.TimerActivity"></activity>
+        <activity android:name=".Activities.VolumeActivity"
+            android:label="Volume Settings"/>
+        <activity android:name=".Activities.TimerActivity"
+            android:label="Sleep Timer">
+        </activity>
 
         <service android:name=".Services.NewBackgroundMusicService"/>
         <receiver android:name=".Receivers.NotificationReceiver"/>
