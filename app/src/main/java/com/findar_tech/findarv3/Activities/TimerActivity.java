@@ -77,7 +77,6 @@ public class TimerActivity extends AppCompatActivity {
                 Integer positionWithoutDecimal = position.intValue();
                 minutesTV.setText(String.format("%s minutes", positionWithoutDecimal.toString()));
                 currentTime = positionWithoutDecimal;
-                System.out.println(buttonState);
                 if (buttonState == 1) {
                     morphToSquare(setTimerBtn,500);
                     buttonState = 0;
@@ -103,7 +102,11 @@ public class TimerActivity extends AppCompatActivity {
                         finish();
                 } else {
                     Snackbar.make(view,"You have selected " + currentTime.toString() + " minutes",Snackbar.LENGTH_SHORT).show();
-                    if (isServiceOn) stopService(new Intent(TimerActivity.this, NewBackgroundMusicService.class));
+                    try {
+                        stopService(new Intent(TimerActivity.this, NewBackgroundMusicService.class));
+                    } catch (Exception e) {
+
+                    }
                     playBtn.change(false,true);
                     isServiceOn = true;
                     Intent i = new Intent(view.getContext(), NewBackgroundMusicService.class);

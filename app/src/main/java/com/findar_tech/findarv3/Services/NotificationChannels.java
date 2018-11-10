@@ -7,7 +7,7 @@ import android.os.Build;
 
 import java.util.Objects;
 
-public class NotificationChannels extends Application {
+public  class NotificationChannels extends Application {
     public static final String CHANNEL_ID = "exampleServiceChannel";
 
     @Override

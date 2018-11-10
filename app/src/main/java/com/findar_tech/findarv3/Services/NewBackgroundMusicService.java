@@ -168,7 +168,6 @@ public class NewBackgroundMusicService extends Service {
             public void onFinish() {
                 try {
                     playBtn.change(true,true);
-                    System.out.println("ok");
                     onDestroy();
                 } catch (Exception e) {
                 }

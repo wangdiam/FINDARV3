@@ -102,7 +102,6 @@ public class MusicFragment extends Fragment {
         songTitleTV = v.findViewById(R.id.song_title_tv);
         backgroundRL = v.findViewById(R.id.fragment_background);
         songTitleTV.setText(returnedSongName);
-        System.out.println(selectedSongImageID);
         backgroundRL.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), selectedSongImageID));
         backgroundRL.getBackground().setAlpha(150);
         if (mParam1 != null) {
@@ -139,14 +138,10 @@ public class MusicFragment extends Fragment {
                 if (selectedSongID == null) selectedSongID = R.raw.ambiphonic_lounge_easy_listening_music;
                 if (returnedSongName == null) returnedSongName = "Ambiphonic Lounge";
                 if (!isServiceOn) {
-           /*         i.putExtra("SONGID",selectedSongID);
-                    i.putExtra("SONGPROGRESS",MainActivity.songProgress);
-                    getActivity().startService(i);*/
                     startService();
                     isServiceOn = true;
                     playBtn.change(false,true);
                 } else {
-                    System.out.println("oof");
                     isServiceOn = false;
                     player.pause();
                     playBtn.change(true,true);
