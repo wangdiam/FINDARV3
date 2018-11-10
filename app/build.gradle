@@ -28,7 +28,11 @@ dependencies {
     implementation 'com.github.ceryle:RadioRealButton:v2.1.1'
     testImplementation 'junit:junit:4.12'
     implementation 'lib.kingja.switchbutton:switchbutton:1.1.7'
+    implementation 'com.github.alpbak:BoxedVerticalSeekBar:1.1.1'
     implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    implementation 'com.sdsmdg.harjot:croller:1.0.7'
+    implementation 'me.angrybyte.slider:slider:1.4.2'
+    implementation 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

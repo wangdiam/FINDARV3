@@ -15,7 +15,7 @@
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
         android:background="@drawable/blue_ripple"
-        android:alpha="0.7"
+        android:alpha="1"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -27,6 +27,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleTextAppearance="@style/TextAppearance"
+            app:expandedTitleGravity="center"
             app:toolbarId="@+id/toolbar">
 
             <android.support.v7.widget.Toolbar

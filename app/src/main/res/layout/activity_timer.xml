@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#1b0000"
     android:layout_height="match_parent"
     tools:context=".Activities.TimerActivity">\
 
@@ -26,85 +27,50 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:layout_below="@id/appbar"
-        android:layout_margin="16dp"
+
+
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sleep Timer"
-        android:textSize="32sp"
-        android:id="@+id/sleeptimer_tv"/>
+        android:layout_centerInParent="true"
+        android:id="@+id/minutes_and_slider_combined_rl">
 
+        <me.angrybyte.circularslider.CircularSlider
 
-    <LinearLayout
-        android:layout_margin="8dp"
-        android:layout_below="@+id/sleeptimer_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/time_buttons_ll"
-        android:weightSum="6"
-        android:orientation="horizontal">
+            android:id="@+id/circular"
+            android:layout_centerInParent="true"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:padding="30dp"
+            app:angle="3.14"
+            app:border_color="#505090"
+            app:border_thickness="14dp"
+            app:thumb_color="#30AEFF"
+            app:thumb_size="24dp" />
 
-        <Button
+        <TextView
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15"
-            android:layout_weight="1"
-            android:id="@+id/fifteen_btn"/>
+            android:id="@+id/current_time_selected_tv"
+            android:textColor="#ffffff"
+            android:text="0 Minutes"
+            android:textSize="24sp"
+            android:layout_below="@id/circular"/>
+
+    </RelativeLayout>
 
 
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="30"
-            android:id="@+id/thirty_btn"/>
 
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="45"
-            android:id="@+id/fortyfive_btn"/>
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="60"
-            android:id="@+id/sixty_btn"/>
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="90"
-            android:id="@+id/ninety_btn"/>
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="120"
-            android:id="@+id/hundredtwenty_btn"/>
-
-    </LinearLayout>
-
-
-    <Button
+    <com.dd.morphingbutton.MorphingButton
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/minutes_and_slider_combined_rl"
         android:id="@+id/set_timer_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Set" />
-
-    <TextView
-        android:layout_below="@id/set_timer_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="time left"
-        android:textSize="36sp"
-        android:id="@+id/countdown_tv"
-        />
+        android:textColor="@android:color/white"/>
 
 </RelativeLayout>

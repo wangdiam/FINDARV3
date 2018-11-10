@@ -137,9 +137,6 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment;
         if (id == R.id.nav_home){
             navigation.getMenu().getItem(0).setChecked(true);
-        } else if (id == R.id.nav_music) {
-        } else if (id == R.id.nav_timer) {
-        } else if (id == R.id.nav_alarm) {
         } else if (id == R.id.nav_share) {
             String url = "http://www.google.com";
             Intent i = new Intent(Intent.ACTION_VIEW);

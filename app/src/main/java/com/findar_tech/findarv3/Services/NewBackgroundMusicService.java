@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.os.IBinder;
@@ -117,8 +116,7 @@ public class NewBackgroundMusicService extends Service {
 //                .setSubText("Sub Text")
 //                .setCustomBigContentView(expandedView)
                     //smallIcon is compulsory
-                    .setSmallIcon(R.drawable.findar)
-                    .setColor(Color.BLUE)
+                    .setSmallIcon(R.drawable.findar_hdpi)
                     //pending intent
                     .setContentIntent(pendingIntent)
                     //auto dismiss when notification is tapped
@@ -126,6 +124,8 @@ public class NewBackgroundMusicService extends Service {
                     .setOngoing(true)
                     //for broadcastIntent and action button in respond to notification
                     .build();
+
+            notification.flags = Notification.FLAG_ONGOING_EVENT;
             //music button on click listeners
             setListeners(expandedView, this);
 
@@ -198,7 +198,6 @@ public class NewBackgroundMusicService extends Service {
             timeLeftText += "0";
         }
         timeLeftText += seconds;
-//        countdownClockTV.setTextViewText(R.id.countdown_tv,timeLeftText);
     }
 
     private static void setListeners(RemoteViews view, Context context){

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@android:color/black"
     android:layout_height="match_parent"
     tools:context=".Activities.VolumeActivity">
 
@@ -25,16 +26,17 @@
 
 
     <LinearLayout
+        android:layout_below="@id/appbar"
+        android:background="#FFFFFF"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:weightSum="4"
         app:layout_constraintTop_toBottomOf="@+id/appbar">
 
-        <SeekBar
+        <!--<SeekBar
             android:id="@+id/volume_seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,8 +52,41 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="16dp"
-            android:text="0" />
+            android:text="0" />-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:background="@android:color/black"
+            android:layout_height="wrap_content">
+
+            <com.sdsmdg.harjot.crollerTest.Croller
+                android:id="@+id/croller"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:back_circle_color="#EDEDED"
+                app:indicator_color="#0B3C49"
+                app:indicator_width="10"
+                app:is_continuous="true"
+                app:label_color="#FFFFFF"
+                app:main_circle_color="#FFFFFF"
+                app:max="1000"
+                app:label="Volume"
+                app:progress_primary_color="#0B3C49"
+                app:progress_secondary_color="#EEEEEE"
+                app:start_offset="45" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/volume_tv"
+                android:text="15"
+                android:textSize="48sp"
+                android:textColor="@android:color/black"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+
+
+</RelativeLayout>

@@ -21,6 +21,7 @@ allprojects {
         jcenter()
         maven { url "https://dl.bintray.com/romancha/romancha-repo" }
         maven { url "https://jitpack.io" }
+
     }
 }
 

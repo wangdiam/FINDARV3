@@ -8,18 +8,6 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="Home" />
-        <item
-            android:id="@+id/nav_music"
-            android:icon="@drawable/ic_music"
-            android:title="Music" />
-        <item
-            android:id="@+id/nav_timer"
-            android:icon="@drawable/ic_timer"
-            android:title="Timer" />
-        <item
-            android:id="@+id/nav_alarm"
-            android:icon="@drawable/ic_alarm"
-            android:title="Alarm" />
     </group>
 
     <item android:title="Others">
