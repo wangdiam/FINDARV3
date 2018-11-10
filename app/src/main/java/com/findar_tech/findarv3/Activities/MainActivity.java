@@ -30,14 +30,13 @@ public class MainActivity extends AppCompatActivity implements
         HelpFragment.OnHelpFragmentInteractionListener,
         LearnFragment.OnLearnFragmentInteractionListener,
         MusicFragment.OnMusicFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
-    Fragment currentFragment;
-    Integer selectedSongID;
-    public static final String MUSICFRAGMENT = "MUSICFRAGMENT";
-    public static final String LEARNFRAGMENT = "LEARNFRAGMENT";
-    public static final String HELPFRAGMENT = "HELPFRAGMENT";
+    private Fragment currentFragment;
+    private static final String MUSICFRAGMENT = "MUSICFRAGMENT";
+    private static final String LEARNFRAGMENT = "LEARNFRAGMENT";
+    private static final String HELPFRAGMENT = "HELPFRAGMENT";
     public static boolean isServiceOn = false;
     public static int songProgress = 0;
-    BottomNavigationView navigation;
+    private BottomNavigationView navigation;
 
 
     @Override
@@ -45,17 +44,16 @@ public class MainActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode,resultCode,data);
     }
 
-    public boolean loadFragment(Fragment fragment, String tag) {
+    private void loadFragment(Fragment fragment, String tag) {
         if (!fragment.equals(currentFragment)) {
             getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.animator.fade_in,
                     android.R.animator.fade_out,android.R.animator.fade_in,
                     android.R.animator.fade_out).replace(R.id.main_layout, fragment,tag).commit();
             currentFragment = fragment;
         }
-        return true;
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -79,9 +77,7 @@ public class MainActivity extends AppCompatActivity implements
                     loadFragment(fragment,LEARNFRAGMENT);
                     return true;
                 case R.id.navigation_help:
-                    if (fragment == null) {
-                        fragment = new HelpFragment();
-                    }
+                    fragment = new HelpFragment();
                     getFragmentManager().popBackStack();
                     loadFragment(fragment,HELPFRAGMENT);
                     return true;
@@ -99,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements
             // this needs some null checks
             Log.v("RECIEVEDPROGRESS","CHECK");
             Bundle b = intent.getExtras();
-            songProgress = b.getInt("SONGPROGRESS");
+            if (!b.isEmpty()) songProgress = b.getInt("SONGPROGRESS");
             ///do something with someDouble
         }
     }
@@ -131,10 +127,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment;
         if (id == R.id.nav_home){
             navigation.getMenu().getItem(0).setChecked(true);
         } else if (id == R.id.nav_share) {
@@ -161,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -176,26 +171,8 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public Integer getSelectedSongID() {
-        return selectedSongID;
-    }
-
-    public void setSelectedSongID(Integer songID) {
-        selectedSongID = songID;
-    }
-
     @Override
-    public void onHelpFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onLearnFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void onMusicFragmentInteraction(Uri uri) {
+    public void onLearnFragmentInteraction() {
 
     }
 

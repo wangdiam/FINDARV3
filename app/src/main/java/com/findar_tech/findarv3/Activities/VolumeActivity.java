@@ -5,18 +5,19 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.findar_tech.findarv3.R;
 import com.sdsmdg.harjot.crollerTest.Croller;
 import com.sdsmdg.harjot.crollerTest.OnCrollerChangeListener;
 
+import java.util.Locale;
+import java.util.Objects;
+
 public class VolumeActivity extends AppCompatActivity {
 
-    SeekBar volumeSeekbar;
-    AudioManager audioManager;
-    TextView volumeTV;
+    private AudioManager audioManager;
+    private TextView volumeTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class VolumeActivity extends AppCompatActivity {
         volumeTV = findViewById(R.id.volume_tv);*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Croller croller = findViewById(R.id.croller);
@@ -39,7 +40,7 @@ public class VolumeActivity extends AppCompatActivity {
                 progressValue = progress;
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
                         progressValue, 0);
-                volumeTV.setText(progressValue.toString());
+                volumeTV.setText(String.format(Locale.getDefault(),"%d",progressValue));
             }
 
             @Override
@@ -55,7 +56,7 @@ public class VolumeActivity extends AppCompatActivity {
 
         try {
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            croller.setMax(audioManager
+            croller.setMax(Objects.requireNonNull(audioManager)
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
             croller.setProgress(audioManager
                     .getStreamVolume(AudioManager.STREAM_MUSIC));

@@ -8,6 +8,7 @@
 
 
     <application
+        android:fullBackupContent="false"
         android:name=".Services.NotificationChannels"
         android:allowBackup="true"
         android:icon="@mipmap/findar"

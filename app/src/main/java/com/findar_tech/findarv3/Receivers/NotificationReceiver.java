@@ -21,32 +21,38 @@ public class NotificationReceiver extends BroadcastReceiver {
         RemoteViews expandedView = new RemoteViews(context.getPackageName(), R.layout.music_notification);
 
 
-        if (intent.getAction().equals(NewBackgroundMusicService.NOTIFY_PLAY)){
-            if (!player.isPlaying()) {
-                Toast.makeText(context, "NOTIFY_PLAY", Toast.LENGTH_LONG).show();
-                Intent serviceIntent = new Intent(context, NewBackgroundMusicService.class);
-                serviceIntent.putExtra("PLAY_STATE", false);
-                expandedView.setImageViewResource(R.id.button_play, R.drawable.ic_play);
-                context.startService(serviceIntent);
-            } else {
+        switch (intent.getAction()) {
+            case NewBackgroundMusicService.NOTIFY_PLAY:
+                if (!player.isPlaying()) {
+                    Toast.makeText(context, "NOTIFY_PLAY", Toast.LENGTH_LONG).show();
+                    Intent serviceIntent = new Intent(context, NewBackgroundMusicService.class);
+                    serviceIntent.putExtra("PLAY_STATE", false);
+                    expandedView.setImageViewResource(R.id.button_play, R.drawable.ic_play);
+                    context.startService(serviceIntent);
+                } else {
+                    Toast.makeText(context, "NOTIFY_PAUSE", Toast.LENGTH_LONG).show();
+                    Intent serviceIntent = new Intent(context, NewBackgroundMusicService.class);
+                    serviceIntent.putExtra("PLAY_STATE", true);
+                    expandedView.setImageViewResource(R.id.button_play, R.drawable.ic_pause);
+                    context.startService(serviceIntent);
+                }
+                break;
+            case NewBackgroundMusicService.NOTIFY_PAUSE:
                 Toast.makeText(context, "NOTIFY_PAUSE", Toast.LENGTH_LONG).show();
                 Intent serviceIntent = new Intent(context, NewBackgroundMusicService.class);
                 serviceIntent.putExtra("PLAY_STATE", true);
                 expandedView.setImageViewResource(R.id.button_play, R.drawable.ic_pause);
                 context.startService(serviceIntent);
-            }
-        } else if (intent.getAction().equals(NewBackgroundMusicService.NOTIFY_PAUSE)){
-            Toast.makeText(context, "NOTIFY_PAUSE", Toast.LENGTH_LONG).show();
-            Intent serviceIntent = new Intent(context, NewBackgroundMusicService.class);
-            serviceIntent.putExtra("PLAY_STATE",true);
-            expandedView.setImageViewResource(R.id.button_play,R.drawable.ic_pause);
-            context.startService(serviceIntent);
-        }else if (intent.getAction().equals(NewBackgroundMusicService.NOTIFY_NEXT)){
-            Toast.makeText(context, "NOTIFY_NEXT", Toast.LENGTH_LONG).show();
-        }else if (intent.getAction().equals(NewBackgroundMusicService.NOTIFY_PREVIOUS)){
-            Toast.makeText(context, "NOTIFY_PREVIOUS", Toast.LENGTH_LONG).show();
-        }else if(intent.getAction().equals(NewBackgroundMusicService.NOTIFY_TOAST)){
-            Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+                break;
+            case NewBackgroundMusicService.NOTIFY_NEXT:
+                Toast.makeText(context, "NOTIFY_NEXT", Toast.LENGTH_LONG).show();
+                break;
+            case NewBackgroundMusicService.NOTIFY_PREVIOUS:
+                Toast.makeText(context, "NOTIFY_PREVIOUS", Toast.LENGTH_LONG).show();
+                break;
+            case NewBackgroundMusicService.NOTIFY_TOAST:
+                Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

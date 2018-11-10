@@ -14,7 +14,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="163dp"
-        android:text="Classical Music"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
 

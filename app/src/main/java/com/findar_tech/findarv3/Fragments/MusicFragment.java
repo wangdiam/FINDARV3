@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -25,6 +25,8 @@ import com.findar_tech.findarv3.R;
 import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
 import com.romancha.playpause.PlayPauseView;
 
+import java.util.Objects;
+
 import static com.findar_tech.findarv3.Activities.MainActivity.isServiceOn;
 import static com.findar_tech.findarv3.Services.NewBackgroundMusicService.player;
 
@@ -33,28 +35,21 @@ import static com.findar_tech.findarv3.Services.NewBackgroundMusicService.player
  * Activities that contain this fragment must implement the
  * {@link OnMusicFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MusicFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class MusicFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     public static PlayPauseView playBtn;
-    ImageButton listBtn,volumeBtn,timerBtn;
-    TextView songTitleTV;
-    RelativeLayout backgroundRL;
-    final int REQUESTCODE = 100;
+    private ImageButton listBtn,volumeBtn,timerBtn;
+    private TextView songTitleTV;
+    private RelativeLayout backgroundRL;
+    private final int REQUESTCODE = 100;
     public static String returnedSongName;
     public static Integer selectedSongID;
-    static Integer selectedSongImageID;
+    private static Integer selectedSongImageID;
 
 
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
 
     private OnMusicFragmentInteractionListener mListener;
 
@@ -73,13 +68,9 @@ public class MusicFragment extends Fragment {
                 bundle.putString("SONGCHOSEN",returnedSongName);
                 songTitleTV.setText(returnedSongName);
                 final int sdk = android.os.Build.VERSION.SDK_INT;
-                if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    backgroundRL.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),selectedSongImageID) );
-                } else {
-                    backgroundRL.setBackground(ContextCompat.getDrawable(getContext(), selectedSongImageID));
-                }
+                backgroundRL.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), selectedSongImageID));
                 backgroundRL.getBackground().setAlpha(150);
-                getActivity().stopService(new Intent(getContext(),NewBackgroundMusicService.class));
+                Objects.requireNonNull(getActivity()).stopService(new Intent(getContext(),NewBackgroundMusicService.class));
                 MainActivity.songProgress = 0;
                 if (playBtn.onPause()) playBtn.toggle();
                 isServiceOn = false;
@@ -88,24 +79,6 @@ public class MusicFragment extends Fragment {
             Toast.makeText(getContext(), ex.toString(),
                     Toast.LENGTH_SHORT).show();
         }
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MusicFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MusicFragment newInstance(String param1, String param2) {
-        MusicFragment fragment = new MusicFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -117,11 +90,11 @@ public class MusicFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (isServiceOn) playBtn.change(true);
-        SharedPreferences sp = getActivity().getSharedPreferences("com.findar_tech.findarv3", Context.MODE_PRIVATE);
+        SharedPreferences sp = Objects.requireNonNull(getActivity()).getSharedPreferences("com.findar_tech.findarv3", Context.MODE_PRIVATE);
         returnedSongName = sp.getString("SELECTEDSONGFORALARMTEXT","Ambiphonic Lounge");
         selectedSongID = sp.getInt("SELECTEDSONGFORALARM",R.raw.ambiphonic_lounge_easy_listening_music);
         selectedSongImageID = sp.getInt("SELECTEDSONGIMAGEFORALARM",R.drawable.brain_development_wallpaper);
@@ -129,16 +102,12 @@ public class MusicFragment extends Fragment {
         songTitleTV = v.findViewById(R.id.song_title_tv);
         backgroundRL = v.findViewById(R.id.fragment_background);
         songTitleTV.setText(returnedSongName);
-        final int sdk = android.os.Build.VERSION.SDK_INT;
-        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            backgroundRL.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),selectedSongImageID) );
-        } else {
-            backgroundRL.setBackground(ContextCompat.getDrawable(getContext(), selectedSongImageID));
-        }
+        System.out.println(selectedSongImageID);
+        backgroundRL.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), selectedSongImageID));
         backgroundRL.getBackground().setAlpha(150);
         if (mParam1 != null) {
             songTitleTV.setText(mParam1);
-        };
+        }
         listBtn = v.findViewById(R.id.list_ib);
         volumeBtn = v.findViewById(R.id.adjust_ib);
         timerBtn = v.findViewById(R.id.timer_ib);
@@ -173,7 +142,7 @@ public class MusicFragment extends Fragment {
            /*         i.putExtra("SONGID",selectedSongID);
                     i.putExtra("SONGPROGRESS",MainActivity.songProgress);
                     getActivity().startService(i);*/
-                    startService(selectedSongID,MainActivity.songProgress,returnedSongName);
+                    startService();
                     isServiceOn = true;
                     playBtn.change(false,true);
                 } else {
@@ -195,25 +164,13 @@ public class MusicFragment extends Fragment {
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onMusicFragmentInteraction(uri);
-        }
-    }
-
-    public void startService(int songid, int songprogress, String songname) {
+    private void startService() {
         Intent i = new Intent(this.getActivity(), NewBackgroundMusicService.class);
         i.putExtra("SONGID",selectedSongID);
         i.putExtra("SONGPROGRESS",MainActivity.songProgress);
         i.putExtra("SONGNAME",returnedSongName);
-        getActivity().startForegroundService(i);
+        Objects.requireNonNull(getActivity()).startForegroundService(i);
 
-    }
-
-    public void stopService() {
-        Intent serviceIntent = new Intent(getActivity(), NewBackgroundMusicService.class);
-        getActivity().stopService(serviceIntent);
     }
 
     @Override
@@ -236,7 +193,6 @@ public class MusicFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences sp;
     }
 
     /**
@@ -250,7 +206,5 @@ public class MusicFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnMusicFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onMusicFragmentInteraction(Uri uri);
     }
 }

@@ -4,11 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="64dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal">
-
         <ImageView
             android:id="@+id/image_mario"
             android:layout_width="64dp"
@@ -37,14 +32,13 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#000000"
-                    android:text="Song Name"/>
+                    android:text="@string/song_name"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/notification_song_name_tv"
-                    android:textSize="16dp"
-                    android:text="FINDAR"
+                    android:textSize="16sp"
+                    android:text="@string/song_description"
                     android:textColor="#000000"
                     android:id="@+id/artist_name_tv"/>
 
@@ -70,6 +64,5 @@
                 android:background="@drawable/ic_pause" />-->
 
         </RelativeLayout>
-    </LinearLayout>
 
 </LinearLayout>

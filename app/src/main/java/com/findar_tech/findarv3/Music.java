@@ -1,15 +1,11 @@
 package com.findar_tech.findarv3;
 
 public class Music {
-    String name, duration, description;
-    int songID, imageID;
+    private String name, duration, description;
+    private int songID, imageID;
 
     public String getName() {
         return name;
-    }
-
-    public String getDuration() {
-        return duration;
     }
 
     public String getDescription() {

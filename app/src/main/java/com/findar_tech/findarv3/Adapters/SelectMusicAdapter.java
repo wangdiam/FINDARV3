@@ -23,10 +23,9 @@ import java.util.List;
 
 public class SelectMusicAdapter extends RecyclerView.Adapter<SelectMusicAdapter.NumberViewHolder>{
 
-        Context context;
-        TextView selectSongTV;
-        LinearLayout selectSongLL;
-        List<Music> musicList;
+    private Context context;
+    private LinearLayout selectSongLL;
+        private final List<Music> musicList;
 
 
         public SelectMusicAdapter(Context context, List<Music> musicList) {
@@ -34,15 +33,14 @@ public class SelectMusicAdapter extends RecyclerView.Adapter<SelectMusicAdapter.
             this.musicList = musicList;
         }
 
+        @NonNull
         @Override
         public NumberViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             context = parent.getContext();
             int layoutIdForListMusic = R.layout.number_list_music;
             LayoutInflater li = LayoutInflater.from(context);
-            boolean shouldAttachToParentImmediately = false;
-            View view = li.inflate(layoutIdForListMusic,parent,shouldAttachToParentImmediately);
-            NumberViewHolder viewHolder = new NumberViewHolder(view,(Activity)context);
-            return viewHolder;
+            View view = li.inflate(layoutIdForListMusic,parent, false);
+            return new NumberViewHolder(view,(Activity)context);
         }
 
         @Override
@@ -57,10 +55,10 @@ public class SelectMusicAdapter extends RecyclerView.Adapter<SelectMusicAdapter.
         }
 
         public class NumberViewHolder extends RecyclerView.ViewHolder {
-            TextView listMusicItemView;
-            TextView listMusicDescView;
+            final TextView listMusicItemView;
+            final TextView listMusicDescView;
 
-            public NumberViewHolder(View itemView, final Activity activity) {
+            NumberViewHolder(View itemView, final Activity activity) {
                 super(itemView);
                 listMusicItemView = itemView.findViewById(R.id.song_name_tv_rv);
                 listMusicDescView = itemView.findViewById(R.id.song_description_tv);

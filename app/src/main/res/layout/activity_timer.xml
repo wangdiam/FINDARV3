@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:background="#1b0000"
     android:layout_height="match_parent"
-    tools:context=".Activities.TimerActivity">\
+    tools:context=".Activities.TimerActivity">
 
 
 
@@ -56,7 +56,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/current_time_selected_tv"
             android:textColor="#ffffff"
-            android:text="0 Minutes"
             android:textSize="24sp"
             android:layout_below="@id/circular"/>
 

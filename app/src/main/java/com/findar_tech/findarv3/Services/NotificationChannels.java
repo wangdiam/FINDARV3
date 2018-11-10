@@ -5,6 +5,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
+import java.util.Objects;
+
 public class NotificationChannels extends Application {
     public static final String CHANNEL_ID = "exampleServiceChannel";
 
@@ -26,7 +28,7 @@ public class NotificationChannels extends Application {
             //NotificationManager creates notification channels
             NotificationManager manager = getSystemService(NotificationManager.class);
             //notification channel will be created as soon as app starts
-            manager.createNotificationChannel(serviceChannel);
+            Objects.requireNonNull(manager).createNotificationChannel(serviceChannel);
         }
     }
 }

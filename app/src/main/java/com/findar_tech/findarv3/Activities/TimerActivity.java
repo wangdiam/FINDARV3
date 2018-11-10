@@ -9,7 +9,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.dd.morphingbutton.MorphingButton;
@@ -18,7 +17,7 @@ import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
+import java.util.Objects;
 
 import me.angrybyte.circularslider.CircularSlider;
 
@@ -29,26 +28,25 @@ import static com.findar_tech.findarv3.Fragments.MusicFragment.selectedSongID;
 
 public class TimerActivity extends AppCompatActivity {
 
-    TextView minutesTV;
-    MorphingButton setTimerBtn;
-    CircularSlider cs;
-    Integer currentTime = 0;
-    int buttonState;
-    ArrayList<Button> listOfButtons;
+    private TextView minutesTV;
+    private MorphingButton setTimerBtn;
+    private CircularSlider cs;
+    private Integer currentTime = 0;
+    private int buttonState;
 
-    public int dimen(@DimenRes int resId) {
+    int dimen(@DimenRes int resId) {
         return (int) getResources().getDimension(resId);
     }
 
-    public int color(@ColorRes int resId) {
+    int color(@ColorRes int resId) {
         return getResources().getColor(resId);
     }
 
-    public int integer(@IntegerRes int resId) {
+    int integer(@IntegerRes int resId) {
         return getResources().getInteger(resId);
     }
 
-    private static double round(double value, int places) {
+    static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(Double.toString(value));
@@ -62,13 +60,14 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTimerBtn = findViewById(R.id.set_timer_btn);
         morphToSquare(setTimerBtn,0);
         buttonState = 0;
         cs = findViewById(R.id.circular);
         minutesTV = findViewById(R.id.current_time_selected_tv);
+        minutesTV.setText("0 minutes");
         cs.setAngle(3.14);
         cs.setOnSliderMovedListener(new CircularSlider.OnSliderMovedListener() {
             @Override
@@ -76,7 +75,7 @@ public class TimerActivity extends AppCompatActivity {
                 Double position = pos;
                 position = (position * -1 + 0.25) * 200;
                 Integer positionWithoutDecimal = position.intValue();
-                minutesTV.setText(positionWithoutDecimal.toString() + " minutes");
+                minutesTV.setText(String.format("%s minutes", positionWithoutDecimal.toString()));
                 currentTime = positionWithoutDecimal;
                 System.out.println(buttonState);
                 if (buttonState == 1) {
@@ -97,7 +96,7 @@ public class TimerActivity extends AppCompatActivity {
                 } else if (currentTime == 0) {
                     Snackbar.make(view,"Please select a duration!",Snackbar.LENGTH_SHORT).show();
                     if (buttonState != 1) {
-                        morphToFailure(setTimerBtn, 500);
+                        morphToFailure(setTimerBtn);
                         buttonState = 1;
                     }
                 } else if (buttonState == 2) {
@@ -116,7 +115,6 @@ public class TimerActivity extends AppCompatActivity {
                     buttonState = 2;
                     startForegroundService(i);
                 }
-                return;
             }
         });
 
@@ -143,9 +141,9 @@ public class TimerActivity extends AppCompatActivity {
         btnMorph.morph(circle);
     }
 
-    private void morphToFailure(final MorphingButton btnMorph, int duration) {
+    private void morphToFailure(final MorphingButton btnMorph) {
         MorphingButton.Params circle = MorphingButton.Params.create()
-                .duration(duration)
+                .duration(500)
                 .cornerRadius(dimen(R.dimen.mb_height_56))
                 .width(dimen(R.dimen.mb_height_56))
                 .height(dimen(R.dimen.mb_height_56))

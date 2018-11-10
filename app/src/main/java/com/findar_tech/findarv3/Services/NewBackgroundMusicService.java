@@ -19,6 +19,8 @@ import com.findar_tech.findarv3.Activities.MainActivity;
 import com.findar_tech.findarv3.R;
 import com.findar_tech.findarv3.Receivers.NotificationReceiver;
 
+import java.util.Objects;
+
 import static com.findar_tech.findarv3.Fragments.MusicFragment.playBtn;
 import static com.findar_tech.findarv3.Services.NotificationChannels.CHANNEL_ID;
 
@@ -31,21 +33,16 @@ public class NewBackgroundMusicService extends Service {
     public static final String NOTIFY_PLAY = "com.findar_tech.findarv3.musicinbackground.play";
     public static final String NOTIFY_PREVIOUS = "com.findar_tech.findarv3.musicinbackground.previous";
     public static final String NOTIFY_NEXT = "com.findar_tech.findarv3.musicinbackground.next";
-    public static final String PLAY_STATE = "PLAY_STATE";
+    private static final String PLAY_STATE = "PLAY_STATE";
 
     //creating a mediaplayer object
     public static MediaPlayer player;
-    Integer songID, songProgress,lastSongID;
-    Boolean changePlayState;
-    String songName;
+    private Integer songID, songProgress,lastSongID;
+    private Boolean changePlayState;
+    private String songName;
     private CountDownTimer countDownTimer;
     private boolean timerRunning;
-    //shows notification and checks for backwards compatibility
-    private NotificationManagerCompat notificationManager;
-    private Notification notification;
     private long timeLeftInMilliseconds;
-    RemoteViews countdownClockTV;
-
 
 
     @Nullable
@@ -66,7 +63,8 @@ public class NewBackgroundMusicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        notificationManager = NotificationManagerCompat.from(this);
+        //shows notification and checks for backwards compatibility
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (intent != null && intent.getExtras() != null) {
             songID = intent.getExtras().getInt("SONGID");
             songProgress = MainActivity.songProgress;
@@ -86,7 +84,7 @@ public class NewBackgroundMusicService extends Service {
             player.start();
             player.seekTo(songProgress);
             //String extra from Main Activity EditText
-            inputMessage = intent.getStringExtra("inputExtra");
+            inputMessage = Objects.requireNonNull(intent).getStringExtra("inputExtra");
             startStop();
 
             //opens Main Activity when user taps on notification, uses pending intent
@@ -97,11 +95,11 @@ public class NewBackgroundMusicService extends Service {
 
             //music_notification layout xml
             RemoteViews expandedView = new RemoteViews(this.getPackageName(), R.layout.music_notification);
-            countdownClockTV = new RemoteViews(this.getPackageName(),R.layout.activity_timer);
+            RemoteViews countdownClockTV = new RemoteViews(this.getPackageName(), R.layout.activity_timer);
 
             Bitmap artWork = BitmapFactory.decodeResource(getResources(), R.drawable.findar);
 
-            notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle(songName)
                     .setContentText("FINDAR")
                     //largeIcon is optional
@@ -172,7 +170,7 @@ public class NewBackgroundMusicService extends Service {
                     playBtn.change(true,true);
                     System.out.println("ok");
                     onDestroy();
-                }catch (Exception e) {
+                } catch (Exception e) {
                 }
             }
         }.start();
@@ -197,7 +195,6 @@ public class NewBackgroundMusicService extends Service {
         if (seconds < 10) {
             timeLeftText += "0";
         }
-        timeLeftText += seconds;
     }
 
     private static void setListeners(RemoteViews view, Context context){
