@@ -25,6 +25,7 @@ import com.findar_tech.findarv3.R;
 import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
 import com.romancha.playpause.PlayPauseView;
 
+import static com.findar_tech.findarv3.Activities.MainActivity.isServiceOn;
 import static com.findar_tech.findarv3.Services.NewBackgroundMusicService.player;
 
 /**
@@ -81,7 +82,7 @@ public class MusicFragment extends Fragment {
                 getActivity().stopService(new Intent(getContext(),NewBackgroundMusicService.class));
                 MainActivity.songProgress = 0;
                 if (playBtn.onPause()) playBtn.toggle();
-                MainActivity.isServiceOn = false;
+                isServiceOn = false;
             }
         } catch (Exception ex) {
             Toast.makeText(getContext(), ex.toString(),
@@ -119,6 +120,7 @@ public class MusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        if (isServiceOn) playBtn.change(true);
         SharedPreferences sp = getActivity().getSharedPreferences("com.findar_tech.findarv3", Context.MODE_PRIVATE);
         returnedSongName = sp.getString("SELECTEDSONGFORALARMTEXT","Ambiphonic Lounge");
         selectedSongID = sp.getInt("SELECTEDSONGFORALARM",R.raw.ambiphonic_lounge_easy_listening_music);
@@ -141,12 +143,12 @@ public class MusicFragment extends Fragment {
         volumeBtn = v.findViewById(R.id.adjust_ib);
         timerBtn = v.findViewById(R.id.timer_ib);
         playBtn = v.findViewById(R.id.play_pause_button);
-        Log.v("ISSERVICEON", String.valueOf(MainActivity.isServiceOn));
+        Log.v("ISSERVICEON", String.valueOf(isServiceOn));
         Log.v("PLAYBTNSTATE", String.valueOf(playBtn.onPlaying()));
-        if (MainActivity.isServiceOn && playBtn.onPlaying()) {
-            playBtn.toggle();
-        } else if (!MainActivity.isServiceOn && playBtn.onPause()) {
-            playBtn.toggle();
+        if (isServiceOn && playBtn.onPlaying()) {
+            playBtn.change(false,true);
+        } else if (!isServiceOn && playBtn.onPause()) {
+            playBtn.change(true,true);
         }
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,34 +167,21 @@ public class MusicFragment extends Fragment {
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playBtn.toggle();
                 if (selectedSongID == null) selectedSongID = R.raw.ambiphonic_lounge_easy_listening_music;
                 if (returnedSongName == null) returnedSongName = "Ambiphonic Lounge";
-                if (!MainActivity.isServiceOn) {
+                if (!isServiceOn) {
            /*         i.putExtra("SONGID",selectedSongID);
                     i.putExtra("SONGPROGRESS",MainActivity.songProgress);
                     getActivity().startService(i);*/
                     startService(selectedSongID,MainActivity.songProgress,returnedSongName);
-                    MainActivity.isServiceOn = true;
+                    isServiceOn = true;
+                    playBtn.change(false,true);
                 } else {
-                    MainActivity.isServiceOn = false;
+                    System.out.println("oof");
+                    isServiceOn = false;
                     player.pause();
+                    playBtn.change(true,true);
                 }
-               /* if (mp == null) {
-                    isPlaying = true;
-                    if (selectedSongID == null) {
-                        mp = MediaPlayer.create(getContext(), R.raw.ambiphonic_lounge_easy_listening_music);
-                    } else {
-                        mp = MediaPlayer.create(getContext(),selectedSongID);
-                    }
-                    mp.start();
-                } else if (isPlaying) {
-                    isPlaying = false;
-                    mp.pause();
-                } else {
-                    isPlaying = true;
-                    mp.start();
-                }*/
             }
         });
         timerBtn.setOnClickListener(new View.OnClickListener() {
@@ -242,6 +231,12 @@ public class MusicFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sp;
     }
 
     /**

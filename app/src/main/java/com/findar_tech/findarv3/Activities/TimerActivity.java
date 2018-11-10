@@ -17,6 +17,7 @@ import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
 
 import java.util.ArrayList;
 
+import static com.findar_tech.findarv3.Activities.MainActivity.isServiceOn;
 import static com.findar_tech.findarv3.Fragments.MusicFragment.playBtn;
 import static com.findar_tech.findarv3.Fragments.MusicFragment.returnedSongName;
 import static com.findar_tech.findarv3.Fragments.MusicFragment.selectedSongID;
@@ -46,7 +47,7 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 try {
-                    playBtn.toggle();
+                    playBtn.change(true,true);
                     player.pause();
                 }catch (Exception e) {
                 }
@@ -190,8 +191,9 @@ public class TimerActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(TimerActivity.this,"You have selected " + currentTime.toString() + " minutes",Toast.LENGTH_SHORT).show();
                     startTimer();
-                    playBtn.toggle();
-                    MainActivity.isServiceOn = true;
+                    if (isServiceOn) stopService(new Intent(TimerActivity.this, NewBackgroundMusicService.class));
+                    playBtn.change(true,true);
+                    isServiceOn = true;
                     Intent i = new Intent(view.getContext(), NewBackgroundMusicService.class);
                     i.putExtra("SONGID",selectedSongID);
                     i.putExtra("SONGPROGRESS",MainActivity.songProgress);

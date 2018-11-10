@@ -168,7 +168,7 @@ public class NewBackgroundMusicService extends Service {
             @Override
             public void onFinish() {
                 try {
-                    playBtn.toggle();
+                    playBtn.change(true,true);
                     System.out.println("ok");
                     onDestroy();
                 }catch (Exception e) {
