@@ -93,7 +93,7 @@ public class NewBackgroundMusicService extends Service {
             //opens Main Activity when user taps on notification, uses pending intent
             Intent notificationIntent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                    0, notificationIntent, 0);
+                    0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
             //music_notification layout xml
@@ -123,6 +123,7 @@ public class NewBackgroundMusicService extends Service {
                     .setContentIntent(pendingIntent)
                     //auto dismiss when notification is tapped
                     .setAutoCancel(true)
+                    .setOngoing(true)
                     //for broadcastIntent and action button in respond to notification
                     .build();
             //music button on click listeners
