@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.widget.RemoteViews;
 
 import com.findar_tech.findarv3.Activities.MainActivity;
+import com.findar_tech.findarv3.Activities.TimerStartedActivity;
 import com.findar_tech.findarv3.R;
 import com.findar_tech.findarv3.Receivers.NotificationReceiver;
 
@@ -38,11 +39,11 @@ public class NewBackgroundMusicService extends Service {
     //creating a mediaplayer object
     public static MediaPlayer player;
     private Integer songID, songProgress,lastSongID;
-    private Boolean changePlayState;
+    private Boolean changePlayState, isTimerService;
     private String songName;
-    private CountDownTimer countDownTimer;
+    public static CountDownTimer countDownTimer;
     private boolean timerRunning;
-    private long timeLeftInMilliseconds;
+    public static long timeLeftInMilliseconds;
 
 
     @Nullable
@@ -64,13 +65,16 @@ public class NewBackgroundMusicService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         //shows notification and checks for backwards compatibility
+        MainActivity.isServiceOn = true;
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (intent != null && intent.getExtras() != null) {
             songID = intent.getExtras().getInt("SONGID");
             songProgress = MainActivity.songProgress;
             songName = intent.getExtras().getString("SONGNAME");
             changePlayState = intent.getBooleanExtra(PLAY_STATE,false);
-            timeLeftInMilliseconds = intent.getLongExtra("TIMESELECTED",999999999) * 1000;
+            isTimerService = intent.getBooleanExtra("ISTIMERSERVICE",false);
+            if (isTimerService) MainActivity.isTimerServiceOn = true;
+            timeLeftInMilliseconds = intent.getLongExtra("TIMESELECTED",999999999) * 1000 + 1000;
         } else {
             songID = R.raw.ambiphonic_lounge_easy_listening_music;
             changePlayState = false;
@@ -95,7 +99,6 @@ public class NewBackgroundMusicService extends Service {
 
             //music_notification layout xml
             RemoteViews expandedView = new RemoteViews(this.getPackageName(), R.layout.music_notification);
-            RemoteViews countdownClockTV = new RemoteViews(this.getPackageName(), R.layout.activity_timer);
 
             Bitmap artWork = BitmapFactory.decodeResource(getResources(), R.drawable.findar);
 
@@ -136,8 +139,10 @@ public class NewBackgroundMusicService extends Service {
             //don't care if system kills the service
         } else if (changePlayState) {
             player.pause();
+            stopTimer();
         } else {
             player.start();
+            startTimer();
         }
 
         return START_NOT_STICKY;
@@ -176,7 +181,7 @@ public class NewBackgroundMusicService extends Service {
         timerRunning = true;
     }
 
-    private void updateTime() {
+    public static void updateTime() {
         Integer hours = (int) (timeLeftInMilliseconds/3600000);
         Integer minutes = (int) (timeLeftInMilliseconds/60000);
         Integer seconds = (int) (timeLeftInMilliseconds%60000/1000);
@@ -193,6 +198,11 @@ public class NewBackgroundMusicService extends Service {
         timeLeftText+=":";
         if (seconds < 10) {
             timeLeftText += "0";
+        }
+        timeLeftText += Integer.toString(seconds);
+        try {
+            TimerStartedActivity.timeLeftTV.setText(timeLeftText);
+        } catch (Exception e) {
         }
     }
 
@@ -240,10 +250,11 @@ public class NewBackgroundMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         //stopping the player when service is destroyed
         player.pause();
-        this.stopSelf();
+        countDownTimer.cancel();
+        MainActivity.isTimerServiceOn = false;
         MainActivity.isServiceOn = false;
+        this.stopSelf();
     }
 }

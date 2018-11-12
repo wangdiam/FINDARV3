@@ -28,4 +28,5 @@
     <integer name="mb_animation">500</integer>
 
     <string name="mb_button">Set</string>
+    <string name="mb_button_cancel">Cancel</string>
 </resources>

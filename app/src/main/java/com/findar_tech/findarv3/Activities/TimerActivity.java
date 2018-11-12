@@ -1,6 +1,7 @@
 package com.findar_tech.findarv3.Activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -15,13 +16,10 @@ import com.dd.morphingbutton.MorphingButton;
 import com.findar_tech.findarv3.R;
 import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
 
 import me.angrybyte.circularslider.CircularSlider;
 
-import static com.findar_tech.findarv3.Activities.MainActivity.isServiceOn;
 import static com.findar_tech.findarv3.Fragments.MusicFragment.playBtn;
 import static com.findar_tech.findarv3.Fragments.MusicFragment.returnedSongName;
 import static com.findar_tech.findarv3.Fragments.MusicFragment.selectedSongID;
@@ -46,13 +44,6 @@ public class TimerActivity extends AppCompatActivity {
         return getResources().getInteger(resId);
     }
 
-    static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(Double.toString(value));
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +64,7 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public void onSliderMoved(double pos) {
                 Double position = pos;
-                position = (position * -1 + 0.25) * 200;
+                position = (position * -1 + 0.25) * 181;
                 Integer positionWithoutDecimal = position.intValue();
                 minutesTV.setText(String.format("%s minutes", positionWithoutDecimal.toString()));
                 currentTime = positionWithoutDecimal;
@@ -105,18 +96,19 @@ public class TimerActivity extends AppCompatActivity {
                     try {
                         stopService(new Intent(TimerActivity.this, NewBackgroundMusicService.class));
                     } catch (Exception e) {
-
                     }
                     playBtn.change(false,true);
-                    isServiceOn = true;
                     Intent i = new Intent(view.getContext(), NewBackgroundMusicService.class);
                     i.putExtra("SONGID",selectedSongID);
                     i.putExtra("SONGPROGRESS",MainActivity.songProgress);
                     i.putExtra("SONGNAME",returnedSongName);
                     i.putExtra("TIMESELECTED",currentTime.longValue());
+                    i.putExtra("ISTIMERSERVICE",true);
                     morphToSuccess(setTimerBtn);
                     buttonState = 2;
-                    startForegroundService(i);
+                    int sdk = Build.VERSION.SDK_INT;
+                    if (sdk < Build.VERSION_CODES.O) startService(i);
+                    else startForegroundService(i);
                 }
             }
         });

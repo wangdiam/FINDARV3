@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.findar_tech.findarv3.Activities.MainActivity;
 import com.findar_tech.findarv3.Activities.SelectMusicActivity;
 import com.findar_tech.findarv3.Activities.TimerActivity;
+import com.findar_tech.findarv3.Activities.TimerStartedActivity;
 import com.findar_tech.findarv3.Activities.VolumeActivity;
 import com.findar_tech.findarv3.R;
 import com.findar_tech.findarv3.Services.NewBackgroundMusicService;
@@ -28,6 +30,7 @@ import com.romancha.playpause.PlayPauseView;
 import java.util.Objects;
 
 import static com.findar_tech.findarv3.Activities.MainActivity.isServiceOn;
+import static com.findar_tech.findarv3.Activities.MainActivity.isTimerServiceOn;
 import static com.findar_tech.findarv3.Services.NewBackgroundMusicService.player;
 
 /**
@@ -104,9 +107,7 @@ public class MusicFragment extends Fragment {
         songTitleTV.setText(returnedSongName);
         backgroundRL.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), selectedSongImageID));
         backgroundRL.getBackground().setAlpha(150);
-        if (mParam1 != null) {
-            songTitleTV.setText(mParam1);
-        }
+        if (mParam1 != null) songTitleTV.setText(mParam1);
         listBtn = v.findViewById(R.id.list_ib);
         volumeBtn = v.findViewById(R.id.adjust_ib);
         timerBtn = v.findViewById(R.id.timer_ib);
@@ -139,10 +140,16 @@ public class MusicFragment extends Fragment {
                 if (returnedSongName == null) returnedSongName = "Ambiphonic Lounge";
                 if (!isServiceOn) {
                     startService();
-                    isServiceOn = true;
                     playBtn.change(false,true);
+                } else if (!player.isPlaying()) {
+                    player.start();
+                    playBtn.change(false, true);
+                } else if (player.isPlaying() && isTimerServiceOn) {
+                    player.stop();
+                    Intent intent = new Intent(view.getContext(), NewBackgroundMusicService.class);
+                    getActivity().stopService(intent);
+                    playBtn.change(true,true);
                 } else {
-                    isServiceOn = false;
                     player.pause();
                     playBtn.change(true,true);
                 }
@@ -151,8 +158,13 @@ public class MusicFragment extends Fragment {
         timerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), TimerActivity.class);
-                startActivity(intent);
+                if (MainActivity.isTimerServiceOn) {
+                    Intent intent = new Intent(view.getContext(),TimerStartedActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(view.getContext(), TimerActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -164,7 +176,9 @@ public class MusicFragment extends Fragment {
         i.putExtra("SONGID",selectedSongID);
         i.putExtra("SONGPROGRESS",MainActivity.songProgress);
         i.putExtra("SONGNAME",returnedSongName);
-        Objects.requireNonNull(getActivity()).startForegroundService(i);
+        int sdk = Build.VERSION.SDK_INT;
+        if (sdk < Build.VERSION_CODES.O) getActivity().startService(i);
+        else Objects.requireNonNull(getActivity()).startForegroundService(i);
 
     }
 

@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String LEARNFRAGMENT = "LEARNFRAGMENT";
     private static final String HELPFRAGMENT = "HELPFRAGMENT";
     public static boolean isServiceOn = false;
+    public static boolean isTimerServiceOn = false;
     public static int songProgress = 0;
     private BottomNavigationView navigation;
 
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements
         if (fragment == null ) {
             fragment = new MusicFragment();
         }
-
         getFragmentManager().popBackStack();
         loadFragment(fragment,MUSICFRAGMENT);
 
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.nav_home){
             navigation.getMenu().getItem(0).setChecked(true);
         } else if (id == R.id.nav_share) {
-            String url = "http://www.google.com";
+            String url = "http://findar-tech.com/index.html";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
