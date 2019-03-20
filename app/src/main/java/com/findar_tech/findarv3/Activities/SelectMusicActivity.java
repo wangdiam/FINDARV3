@@ -44,7 +44,15 @@ public class SelectMusicActivity extends AppCompatActivity {
     private void fillMusic() {
         musicArrayList.clear();
 
-        Music m = new Music();
+        Music m = new Music("Beach Wind Gentle","20:00",getResources().getString(R.string.brief_description),R.raw.beach_wind_gentle,R.drawable.beach_wind_gentle);
+        musicArrayList.add(m);
+        m = new Music("Ocean Waves Close","20:00",getResources().getString(R.string.brief_description),R.raw.ocean_wave_close,R.drawable.ocean_waves_close);
+        musicArrayList.add(m);
+        m = new Music("Fountain Rocks","20:00",getResources().getString(R.string.brief_description),R.raw.fountain_rocks,R.drawable.fountain_rocks);
+        musicArrayList.add(m);
+
+
+        m = new Music();
         m.setName("Ambiphonic Lounge");
         m.setDuration("05:02");
         m.setDescription(getResources().getString(R.string.brief_description));

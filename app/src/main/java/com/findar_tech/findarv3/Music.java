@@ -4,6 +4,18 @@ public class Music {
     private String name, duration, description;
     private int songID, imageID;
 
+    public Music(String name, String duration, String description, int songID, int imageID) {
+        this.name = name;
+        this.duration = duration;
+        this.description = description;
+        this.songID = songID;
+        this.imageID = imageID;
+    }
+
+    public Music() {
+
+    }
+
     public String getName() {
         return name;
     }
